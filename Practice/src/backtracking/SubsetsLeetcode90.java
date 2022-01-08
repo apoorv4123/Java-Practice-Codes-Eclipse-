@@ -1,0 +1,37 @@
+package backtracking;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class SubsetsLeetcode90 {
+
+	public static void main(String[] args) {
+		System.out.println(subsetsWithDup(new int[] {1,2,2}));
+	}
+	
+	public static List<List<Integer>> subsetsWithDup(int[] nums) {
+		List<List<Integer>> answer = new ArrayList<>();
+		subsetsWithDup(nums, 0, new ArrayList<Integer>(), answer);
+		
+		return answer;
+	}
+	
+	public static void subsetsWithDup(int[] nums, int vidx, List<Integer> list, List<List<Integer>> answer) {
+		if (vidx == nums.length) {
+			if(!answer.contains(list))
+			answer.add(new ArrayList<>(list));
+			return;
+		}
+
+		// won't contribute
+		subsetsWithDup(nums, vidx + 1, list, answer);
+		
+		// contribute
+		list.add(nums[vidx]);
+		subsetsWithDup(nums, vidx + 1, list, answer);
+		list.remove(list.size() - 1);
+		
+		return;
+	}
+
+}

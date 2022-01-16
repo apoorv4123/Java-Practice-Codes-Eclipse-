@@ -365,6 +365,259 @@ public class Main {
 		pathToLeafFromRootInRange(node.right, path + node.data + " ", sum + node.data, lo, hi);
 	}
 
+	public static void transformToLeftCloneTree(Node node) {
+		if (node == null) {
+			return;
+		}
+		transformToLeftCloneTree(node.left);
+		transformToLeftCloneTree(node.right);
+		Node clone = new Node(node.data, node.left, null);
+		node.left = clone;
+	}
+
+	public static Node transformToLeftCloneTree2(Node node) {
+		if (node == null) {
+			return null;
+		}
+		Node lct = transformToLeftCloneTree2(node.left);
+		Node rct = transformToLeftCloneTree2(node.right);
+
+		Node cloneNode = new Node(node.data, lct, null);
+		node.left = cloneNode;
+		node.right = rct;
+
+		return node;
+	}
+
+	public static Node transformBackFromLeftCloneTree(Node node) {
+		if (node == null) {
+			return null;
+		}
+
+		Node lt = transformBackFromLeftCloneTree(node.left.left);
+		Node rt = transformBackFromLeftCloneTree(node.right);
+
+		node.left = lt;
+		node.right = rt;
+
+		return node;
+	}
+
+	// Print those nodes whose parents have only one child
+	public static void printSingleChildNodes(Node node, Node parent) {
+		if (node == null) {
+			return;
+		}
+		if (parent != null && parent.left == node && parent.right == null) {
+			System.out.println(node.data);
+		} else if (parent != null && parent.right == node && parent.left == null) {
+			System.out.println(node.data);
+		}
+		printSingleChildNodes(node.left, node);
+		printSingleChildNodes(node.right, node);
+	}
+
+	public static Node removeLeaves(Node node) {
+
+		if (node == null) {
+			return null;
+		}
+
+		if (node.left == null && node.right == null) {
+			return null;
+		}
+
+		node.left = removeLeaves(node.left);
+		node.right = removeLeaves(node.right);
+
+		return node;
+	}
+
+	public static int diameter1(Node node) {
+
+		if (node == null) {
+			return 0;
+		}
+
+		// diameter is in lst : max distance between two nodes on lhs
+		int ld = diameter1(node.left);
+		// diameter is in lst : max distance between two nodes on rhs
+		int rd = diameter1(node.right);
+		// diameter passes through root
+		int d = ht(node.left) + ht(node.right) + 2;
+
+		int dia = Math.max(d, Math.max(ld, rd));
+
+		return dia;
+	}
+
+	public static int ht(Node node) {
+		if (node == null) {
+			return -1;
+		}
+		return Math.max(ht(node.left), ht(node.right)) + 1;
+	}
+
+	static class DiaPair {
+		int ht;
+		int dia;
+
+		DiaPair() {
+
+		}
+
+		DiaPair(int ht, int dia) {
+			this.ht = ht;
+			this.dia = dia;
+		}
+	}
+
+	public static DiaPair diameter2(Node node) {
+		if (node == null) {
+			return new DiaPair(-1, Integer.MIN_VALUE);
+		}
+		DiaPair lp = diameter2(node.left);
+		DiaPair rp = diameter2(node.right);
+
+		DiaPair sp = new DiaPair();
+		sp.ht = Math.max(lp.ht, rp.ht) + 1;
+		sp.dia = Math.max(lp.ht + rp.ht + 2, Math.max(lp.dia, rp.dia));
+
+		return sp;
+	}
+
+	static class TiltPair {
+		int tiltTree;
+		int treesum;
+
+		TiltPair() {
+
+		}
+
+		TiltPair(int tt, int ts) {
+			this.tiltTree = tt;
+			this.treesum = ts;
+		}
+	}
+
+	public static TiltPair tilt(Node node) {
+		if (node == null) {
+			return new TiltPair(0, 0);
+		}
+
+		TiltPair lp = tilt(node.left);
+		TiltPair rp = tilt(node.right);
+
+		TiltPair sp = new TiltPair();
+		sp.tiltTree = lp.tiltTree + rp.tiltTree + Math.abs(lp.treesum - rp.treesum);
+		sp.treesum = lp.treesum + rp.treesum + node.data;
+
+		return sp;
+	}
+
+	static int tilt = 0;
+
+	public static int tilt2(Node node) { // this function will return sum of the tree
+
+		if (node == null) {
+			return 0;
+		}
+
+		// will return left's sum and change tilt for left side
+		int ls = tilt2(node.left); // left subtree sum
+		// will return right's sum and change tilt for right side
+		int rs = tilt2(node.right); // right subtree sum
+
+		int selfTilt = Math.abs(ls - rs);
+//		System.out.print(selfTilt +" ");
+		tilt += selfTilt;
+
+		int ts = ls + rs + node.data; // total sum
+
+		return ts;
+	}
+
+	static class BstPair {
+		boolean isBST;
+		int min;
+		int max;
+
+		public BstPair() {
+
+		}
+
+		public BstPair(boolean isBST, int min, int max) {
+			this.isBST = isBST;
+			this.min = min;
+			this.max = max;
+		}
+	}
+
+	public static BstPair isBST(Node node) {
+		if (node == null) {
+			return new BstPair(true, Integer.MAX_VALUE, Integer.MIN_VALUE);
+		}
+		BstPair lp = isBST(node.left);
+		BstPair rp = isBST(node.right);
+
+		BstPair sp = new BstPair();
+		sp.min = Math.min(node.data, Math.min(lp.min, rp.min));
+		sp.max = Math.max(node.data, Math.max(lp.max, rp.max));
+		sp.isBST = lp.isBST && rp.isBST && node.data > lp.max && node.data < rp.min;
+
+		return sp;
+	}
+
+	static class BalancedPair {
+		boolean isBalanced;
+		int ht;
+
+		BalancedPair() {
+
+		}
+
+		BalancedPair(boolean ib, int ht) {
+			this.isBalanced = ib;
+			this.ht = ht;
+		}
+	}
+
+	public static BalancedPair isBalanced(Node node) {
+		
+		if(node == null) {
+			return new BalancedPair(true, -1);
+		}
+		
+		BalancedPair lp = isBalanced(node.left);
+		BalancedPair rp = isBalanced(node.right);
+		
+		BalancedPair sp = new BalancedPair();
+		sp.ht = Math.max(lp.ht, rp.ht) + 1;
+		sp.isBalanced = rp.isBalanced && lp.isBalanced && lp.ht - rp.ht >= -1 && lp.ht - rp.ht <= 1;
+		
+		return sp;
+	}
+	
+	static boolean isBal = true;
+	public static int isBalanced2(Node node) {
+		
+		if(node == null) {
+			return 0;
+		}
+		
+		int lh = isBalanced2(node.left);
+		int rh = isBalanced2(node.right);
+		
+		int gap = Math.abs(lh - rh);
+		if(gap > 1) {
+			isBal = false;
+		}
+		
+		int sh = Math.max(lh, rh) + 1;
+		
+		return sh;
+	}
+	
 	public static void main(String[] args) {
 
 		Integer[] arr = { 50, 25, 12, null, null, 37, 30, null, null, null, 75, 62, null, 70, null, null, 87, null,
@@ -432,9 +685,37 @@ public class Main {
 //		printKLevelsDown(root, 2);
 //		System.out.println();
 //		printKLevelsDownIterative(root, 2);
-		
-		pathToLeafFromRootInRange(root, "", 0, 0, 500);
 
+//		pathToLeafFromRootInRange(root, "", 0, 0, 500);
+
+//		transformToLeftCloneTree(root);
+//		display(root);
+
+//		root = transformToLeftCloneTree2(root);
+//		display(root);
+//		System.out.println();
+
+//		root = transformBackFromLeftCloneTree(root);
+//		display(root);
+
+//		printSingleChildNodes(root, null);
+
+//		removeLeaves(root);
+//		display(root);
+
+//		System.out.println(diameter1(root));
+//		System.out.println(diameter2(root).dia);
+
+//		System.out.println("tilt -> " + tilt(root).tiltTree + " , Tree sum -> " + tilt(root).treesum);
+//		System.out.println();
+//		System.out.println("tilt -> " + tilt + " , Tree sum -> " + tilt2(root));
+
+//		System.out.println(isBST(root).isBST);
+		
+		System.out.println(isBalanced(root).isBalanced);
+		
+		isBalanced2(root);
+		System.out.println(isBal);
 	}
 
 }

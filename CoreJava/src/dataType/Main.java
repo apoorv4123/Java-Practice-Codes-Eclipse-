@@ -14,6 +14,9 @@ public class Main {
 //		long val = 100L;
 //		System.out.println(val);
 
+		// Q: How float and double values are stored in memory? Why BigInteger should be used instead of float and double?
+//		https://stackoverflow.com/questions/16369726/declaring-floats-why-default-type-double
+
 //		float v1 = .3f;
 ////		float v2 = .3; // compilation error
 ////		float v2 = 0.3; // compilation error

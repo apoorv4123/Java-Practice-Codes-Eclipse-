@@ -54,6 +54,30 @@ public class Main {
 		int intVar2 = 130;
 		byte byteVar2 = (byte) intVar2;
 		System.out.println(byteVar2); // -126
+		
+		// Automatic Promotion during expression
+		// byte range is -128 to 127
+		byte a = 127;
+		byte b = 1;
+//		byte sum = a + b; // compile time error: cannot convert int to byte
+		byte sum = (byte) (a+b);
+		int sum1 = a + b;
+		
+		byte a1 = 126;
+		byte b1 = 1;
+		int sum2 = a + b; // here, a + b does not crosses the byte limit
+		
+		short a2 = 126;
+		short b2 = 1;
+//		short sum3 = a2 + b2; // compile time error : cannot convert from int to short
+		int sum3 = a + b; // here, a + b does not crosses the byte limit
+		
+		int a4 = 10;
+		double d = 20d;
+//		int sum4 = a4 + d; // compile time error -> Type mismatch: cannot convert from double to int
+		double sum4 = a4 + d;
+		int sum5 = (int) (a4 + d);
+	
 	}
 
 }

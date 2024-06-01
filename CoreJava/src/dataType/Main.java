@@ -43,6 +43,17 @@ public class Main {
 //		int a = 077;
 //		int b = 09; // compile time error as 9 is not valid in octal number system
 //		System.out.println(a); // 77{octal} = (7 × 8^1) + (7 × 8^0) = 63{decimal}
+		
+		
+		// Down-casting / explicit type-casting
+		int intVar1 = 10;
+//		byte byteVar1 = intVar1; // compile time error
+		byte byteVar1 = (byte) intVar1;
+		System.out.println(byteVar1); // 10
+		
+		int intVar2 = 130;
+		byte byteVar2 = (byte) intVar2;
+		System.out.println(byteVar2); // -126
 	}
 
 }

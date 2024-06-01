@@ -77,7 +77,13 @@ public class Main {
 //		int sum4 = a4 + d; // compile time error -> Type mismatch: cannot convert from double to int
 		double sum4 = a4 + d;
 		int sum5 = (int) (a4 + d);
-	
+		
+		// Kinds of variable
+		Employee obj1 = new Employee();
+		Employee obj2 = new Employee();
+		
+		System.out.println(Employee.staticVariable); // cannot be accessed using object name
+		System.out.println(obj1.memberVariable + obj2.memberVariable);
 	}
 
 }

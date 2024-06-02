@@ -2,7 +2,7 @@ package dataType;
 
 import java.math.BigInteger;
 
-public class Main {
+public class EmployeeClient {
 
 	public static void main(String[] args) {
 

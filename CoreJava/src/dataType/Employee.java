@@ -14,6 +14,9 @@ public class Employee {
 	int memberVariable; // member variable or instance variable : Each object has its own copy of member variables
 	static int staticVariable = 100; // static variable or class variable
 	
+	final static int EMP_ID = 100; // Constant variable
+	// Both "static final" and "final static" would work
+	
 	Employee() {
 		
 	}
